@@ -229,7 +229,7 @@ document.querySelectorAll('[data-product]').forEach(b=>{if(b.id==='pickerCta')re
 
 document.getElementById('closeModal').onclick=()=>modal.classList.remove('show');
 // TODO: Replace with your Apps Script URL
-const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbx02RJcqXntUQDqrSZBJYNretaZD_wvrmBxn1e7wYLteywVNJmAWtryiqFt2aCEguQhFg/exec';
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwT1bM8D1EkxBw1Xk-eIEvrLE0JBrocSlUcKG2LeowfJRSZOfmii0K9YFnEkaLgGYF97w/exec';
 let orderFinalized=false,purchaseEventFired=false,metaPurchaseEventFired=false,upsellFallbackTimer=null;
 function buildOrderPayload(){
   order.totalPrice = order.price + order.upsellPrice;
