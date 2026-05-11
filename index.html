@@ -256,7 +256,8 @@ function sendOrderToSheet(payload,useBeacon){
   }
   fetch(WEBHOOK_URL, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
     body
   }).catch(function(error){console.error('Google Sheet error:', error)});
 }
