@@ -445,7 +445,7 @@ fbq('init','778731385018899');fbq('track','PageView');
 // ── ORDER STATE ──
 let order={name:"",phone:"",street:"",city:"",zip:"",product:"TRIO Bundle",quantity:1,price:299,upsell:false,upsellPrice:0,totalPrice:299};
 const upsellEl=document.getElementById('upsell'),thankyou=document.getElementById('thankyou'),floatingNav=document.getElementById('floatingNav'),stickyCta=document.getElementById('stickyCta');
-let lastScrollY=window.scrollY,orderFinalized=false,purchaseEventFired=false,metaPurchaseEventFired=false,upsellFallbackTimer=null;
+let lastScrollY=window.scrollY,orderFinalized=false,purchaseEventFired=false,metaPurchaseEventFired=false,metaPurchaseEventId='',upsellFallbackTimer=null;
 
 // ── SCROLL HIDE/SHOW NAV ──
 window.addEventListener('scroll',()=>{
@@ -521,7 +521,7 @@ function sendOrderToSheet(payload,useBeacon){
 }
 function firePurchase(payload){
   if(!purchaseEventFired&&typeof ttq!=='undefined'){purchaseEventFired=true;ttq.track('Purchase',{content_type:'product',content_id:getProductSku(order.product),content_name:order.product,quantity:payload.quantity,value:Number(payload.totalPrice),currency:'RON'});}
-  if(!metaPurchaseEventFired&&typeof fbq!=='undefined'){metaPurchaseEventFired=true;fbq('track','Purchase',{content_type:'product',content_ids:[getProductSku(order.product)],content_name:order.product,num_items:payload.quantity,value:Number(payload.totalPrice),currency:'RON'});}
+  if(!metaPurchaseEventFired&&typeof fbq!=='undefined'){metaPurchaseEventFired=true;fbq('track','Purchase',{content_type:'product',content_ids:[getProductSku(order.product)],content_name:order.product,num_items:payload.quantity,value:Number(payload.totalPrice),currency:'RON'},{eventID:metaPurchaseEventId});}
 }
 function finalizeOrder(useBeacon){
   if(orderFinalized)return;orderFinalized=true;
@@ -539,6 +539,7 @@ document.getElementById('orderForm').addEventListener('submit',e=>{
   const fd=new FormData(e.target);
   order.name=fd.get('name').trim();order.phone=fd.get('phone').trim();
   order.street=fd.get('street').trim();order.city=fd.get('city').trim();order.zip=fd.get('zip').trim();
+  metaPurchaseEventId='snap-ro-'+Date.now()+'-'+Math.random().toString(36).slice(2);
   order.upsell=false;order.upsellPrice=0;
   upsellEl.classList.add('show');
   if(upsellFallbackTimer)clearTimeout(upsellFallbackTimer);
